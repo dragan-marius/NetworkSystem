@@ -14,7 +14,7 @@ public class GridController {
     }
     public String simulateTick(double sunFactor, double windFactor) {
         if (getBlackout() == true) {
-            return "EROARE: Reteaua este in BLACKOUT. Simulare oprita";
+            return "ERROR: Network is in BLACKOUT. Simulation stopped";
         }
         tickNumber++;
         for (EnergyConsumer energyConsumer : energyConsumer) {
@@ -23,7 +23,7 @@ public class GridController {
         double totalProduction = 0.0;
         double bTotal = 0.0;
         String disconnectList = "";
-        //calcul productie de energie
+        /*energy production calculation*/
         for (EnergyProducer energyProducer : energyProducer) {
             if (energyProducer.operationalStatus) {
                 totalProduction = totalProduction + energyProducer.calculateProduction(sunFactor, windFactor);
@@ -31,9 +31,8 @@ public class GridController {
         }
         double demandTotal = 0.0;
         double deficit = 0.0;
-        //calcul cerere energie
+        /*energy demand calculation*/
         for (EnergyConsumer energyConsumer : energyConsumer) {
-            //cerereTotala = cerereTotala + consumatorEnergie.getCerereCurenta();
             if (energyConsumer.operationalStatus) {
                 demandTotal = demandTotal + energyConsumer.getCurrentRequest();
             }
@@ -57,8 +56,8 @@ public class GridController {
             }
         }
         if (deficit > 0) {
-            //triage
-            //decuplare in ordinea prioritatii
+            /*triage*/
+            /*disconnection in order of priority*/
             for (EnergyConsumer energyConsumer : energyConsumer) {
                 if (energyConsumer.getPriority() == 3 && deficit > 0) {
                     energyConsumer.disconnectFromNetwork();
@@ -82,9 +81,8 @@ public class GridController {
         }
         if (deficit > 0) {
             blackout = true;
-            messages.add("Tick " + tickNumber + ": BLACKOUT! SIMULARE OPRITA.");
-            // nr_tickuri++;
-            return "BLACKOUT! SIMULARE OPRITA.";
+            messages.add("Tick " + tickNumber + ": BLACKOUT! SIMULATION OFF.");
+            return "BLACKOUT! SIMULATION OFF.";
         }
         for (Battery battery : batteries) {
             bTotal = bTotal + battery.getStoredEenergy();
@@ -92,11 +90,11 @@ public class GridController {
         String productieTotalaFormat = String.format("%.2f", totalProduction);
         String bTotalFormat = String.format("%.2f", bTotal);
         String cerereTotalaFormat = String.format("%.2f", demandTotal);
-        return "TICK: Productie " + productieTotalaFormat + ", Cerere " + cerereTotalaFormat + ". Baterii: " + bTotalFormat + " MW. Decuplati: [" + disconnectList + "]";
+        return "TICK: Production " + productieTotalaFormat + ", Demand: " + cerereTotalaFormat + ". Batteries: " + bTotalFormat + " MW. Unplug: [" + disconnectList + "]";
     }
 
     public int verification(String id){
-        //verificare unicitate id
+        /*ID uniqueness check*/
         for(EnergyProducer energyProducer : energyProducer){
             if(energyProducer.id.equals(id)){
                 return 0;
@@ -116,14 +114,14 @@ public class GridController {
     }
 
     public String addProducer(String producerType, String id, double power){
-        //verificare stare retea
+        /*check network status*/
         if(blackout ==true)
-            return "EROARE: Reteaua este in BLACKOUT. Simulare oprita.";
+            return "ERROR: Network is in BLACKOUT. Simulation stopped.";
         int ok= verification(id);
         if(ok==0){
-            return "EROARE: Exista deja o componenta cu id-ul "+id+"\n";
+            return "ERROR: A component with the id already exists. "+id+"\n";
         }
-        //verificare tip producator
+        /*producer type verification*/
         if(producerType.equals("solar")){
             SolarPanel solarProducer = new SolarPanel(power,id);
             energyProducer.add(solarProducer);
@@ -132,96 +130,96 @@ public class GridController {
             NuclearReactor reactorProducer = new NuclearReactor(power,id);
             energyProducer.add(reactorProducer);
         }
-        if(producerType.equals("turbina")){
+        if(producerType.equals("turbine")){
             WindTurbine turbineProducer = new WindTurbine(power,id);
             energyProducer.add(turbineProducer);
         }
-        return "S-a adaugat producatorul "+id+" de tip " + producerType +"\n";
+        return "The producer has been added. "+id+" of type " + producerType +"\n";
     }
 
     public String addConsumer(String ConsumatorType, String id, double power){
-        //verificare stare retea
+        /*check network status*/
         if(blackout ==true)
-            return "EROARE: Reteaua este in BLACKOUT. Simulare oprita.";
+            return "ERROR: Network is in BLACKOUT. Simulation stopped.";
         int ok = verification(id);
         if(ok == 0){
-            return "EROARE: Exista deja o componenta cu id-ul " + id + "\n";
+            return "ERROR: A component with the id: " + id +"already exists: "+ "\n";
         }
-        //verificare tip consumator
-        if(ConsumatorType.equals("suport_viata")){
+        /*consumer verification*/
+        if(ConsumatorType.equals("life_support")){
             LifeSupportSystem lifeSupportSystem = new LifeSupportSystem(id, power);
             energyConsumer.add(lifeSupportSystem);
         }
-        if(ConsumatorType.equals("laborator")){
+        if(ConsumatorType.equals("laboratory")){
             ScientificLaboratory lab = new ScientificLaboratory(id, power);
             energyConsumer.add(lab);
         }
-        if(ConsumatorType.equals("iluminat")){
+        if(ConsumatorType.equals("lighting")){
             LightingSystem system = new LightingSystem(id, power);
             energyConsumer.add(system);
         }
-        return "S-a adaugat consumatorul " + id + " de tip " + ConsumatorType +"\n";
+        return "Consumer added " + id + " of type " + ConsumatorType +"\n";
     }
 
     public String addBattery(String id, double maximumCapacity){
-        //verificare stare retea
+        /*check network status*/
         if(blackout ==true)
-            return "EROARE: Reteaua este in BLACKOUT. Simulare oprita.";
+            return "ERROR: Network is in BLACKOUT. Simulation stopped.";
         int ok = verification(id);
         if(ok==0){
-            return "EROARE: Exista deja o componenta cu id-ul " + id + "\n";
+            return "ERROR: A component with the id " + id + " already exists.\n";
         }
         Battery batteryNew = new Battery(id, maximumCapacity);
         batteries.add(batteryNew);
-        return "S-a adaugat bateria " + id + " cu capacitatea " + maximumCapacity + "\n";
+        return "Battery added" + id + " with capacity " + maximumCapacity + "\n";
     }
 
     public String statusVerification(String id, boolean OperationalStatus){
-        //verificare id
+        /*check id*/
         int ok= verification(id);
         if (ok == 1)
-            return "EROARE: Nu exista componenta cu id-ul " + id + "\n";
-        //schimbare status operational
+            return "ERROR: Compound with id does not exist"+ id + "\n";
+        /*operational status change*/
         for(EnergyConsumer energyConsumer : energyConsumer){
             if(energyConsumer.id.equals(id)){
                 energyConsumer.operationalStatus = OperationalStatus;
                 if(energyConsumer.operationalStatus ==true){
-                    return "Componenta " + id + " este acum operationala\n";
+                    return "Compound " + id + " is now operational\n";
                 }
-                else return "Componenta " + id + " este acum defecta\n";
+                else return "Compound " + id + " it is now defective\n";
             }
         }
         for(EnergyProducer energyProducer : energyProducer){
             if(energyProducer.id.equals(id)){
                 energyProducer.operationalStatus = OperationalStatus;
                 if(energyProducer.operationalStatus ==true){
-                    return "Componenta " + id + " este acum operationala\n";
+                    return "Compound " + id + " is now operational\n";
                 }
-                else return "Componenta " + id + " este acum defecta\n";
+                else return "Compound " + id + " it is now defective\n";
             }
         }
         for(Battery battery : batteries){
             if(battery.id.equals(id)){
                 battery.operationalStatus = OperationalStatus;
                 if(battery.operationalStatus ==true){
-                    return "Componenta " + id + " este acum operationala\n";
+                    return "Compound " + id + " is now operational\n";
                 }
-                else return "Componenta " + id + " este acum defecta\n";
+                else return "Compound " + id + " it is now defective\n";
             }
         }
         return "";
     }
 
     public String NetworkState(){
-        //tipul retelei
+        /*network type*/
         if(batteries.size()==0 && energyProducer.size()==0  && energyConsumer.size()==0){
-            return "Reteaua este goala\n";
+            return "The network is empty.\n";
         }
         String answer="";
         if(blackout ==true) {
-            answer = answer + "Stare Retea: BLACKOUT\n";
+            answer = answer + "Network type: BLACKOUT\n";
         } else {
-            answer = answer+"Stare Retea: STABILA" + "\n";
+            answer = answer+"Network type: STABLE" + "\n";
         }
         for (EnergyProducer energyProducer : energyProducer) {
             answer = answer + energyProducer.displayDetails();

@@ -11,7 +11,7 @@ public class SolarPanel extends EnergyProducer {
     }
     public String displayDetails() {
         String power = String.format("%.2f",this.maximumPower);
-        String s = "Producator "+id+" (PanouSolar) - PutereBaza: "+power+" - Status: ";
+        String s = "Producer "+id+" (SolarPanel) - BasePower: "+power+" - Status: ";
         if(operationalStatus ==true){
             s = s+"Operational\n";
         }

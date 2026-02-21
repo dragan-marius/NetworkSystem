@@ -10,106 +10,101 @@ public class App {
     }
 
     public void run() {
-        //comanda
         String lineCommand=scanner.nextLine();
         GridController grid = new GridController();
         while(!lineCommand.equals("7")){
             String [] command=lineCommand.split(" ");
-            //identificare elemente din comanda
             int commandNumber=-1;
-            //tipul comenzii si tratare cazuri de eroare
+            /*order type and error handling*/
             try {
                     commandNumber = Integer.parseInt(command[0]);
             }catch (IllegalArgumentException e){
-                System.out.println("EROARE: Comanda necunoscuta.");
+                System.out.println("ERROR: Unknown command.");
             }
             if(commandNumber>7)
-                System.out.println("EROARE: Comanda necunoscuta.");
+                System.out.println("ERROR: Unknown command.");
 
             if(commandNumber==0){
-                //adaugare producator
-                if(command[1].equals("solar") || command[1].equals("reactor") || command[1].equals("turbina") ){
+                /*add producer*/
+                if(command[1].equals("solar") || command[1].equals("reactor") || command[1].equals("turbine") ){
                     if(command.length==4) {
-                        //verificare numar parametri
+                        /*check number of parameters*/
                         double power = Double.parseDouble(command[3]);
                         if (power > 0.0) {
-                            String adaugare = grid.addProducer(command[1], command[2], power);
-                            System.out.println(adaugare);
+                            String add = grid.addProducer(command[1], command[2], power);
+                            System.out.println(add);
                         } else {
-                            System.out.println("EROARE: Putere invalida\n");
+                            System.out.println("ERROR: Invalid power\n");
                         }
                     } else {
-                        System.out.println("EROARE: Format comanda invalid\n");
+                        System.out.println("ERROR: Invalid command format\n");
                     }
                 }
                 else {
-                    System.out.println("EROARE: Tip producator invalid\n");
+                    System.out.println("ERROR: Invalid producer type\n");
                 }
             }
 
             if(commandNumber==1){
-                //adaugare consumator
-                if(command[1].equals("suport_viata") || command[1].equals("laborator") || command[1].equals("iluminat")){
+                //add consumer
+                if(command[1].equals("life_support") || command[1].equals("laboratory") || command[1].equals("lighting")){
                     if(command.length==4) {
-                        //verificare numar parametri
+                        /*check number of parameters*/
                         double maxCapacity = Double.parseDouble(command[3]);
                         if (maxCapacity > 0.0) {
-                            String adaugare = grid.addConsumer(command[1], command[2], maxCapacity);
-                            System.out.println(adaugare);
+                            String add = grid.addConsumer(command[1], command[2], maxCapacity);
+                            System.out.println(add);
                         } else {
-                            System.out.println("EROARE: Cerere putere invalida\n");
+                            System.out.println("ERROR: Invalid power request\n");
                         }
                     } else {
-                        System.out.println("EROARE: Format comanda invalid\n");
+                        System.out.println("ERROR: Invalid command format\n");
                     }
                 }
                 else {
-                    System.out.println("EROARE: Tip consumator invalid\n");
+                    System.out.println("ERROR: Invalid consumer type\n");
                 }
             }
 
             if(commandNumber==2){
-                //adaugare baterie
+                /*add battery*/
                 if(command.length==3) {
-                    //verificare numar parametri
                     double capacitate_max = Double.parseDouble(command[2]);
                     if (capacitate_max > 0.0) {
-                        String adaugare = grid.addBattery(command[1], capacitate_max);
-                        System.out.println(adaugare);
+                        String add = grid.addBattery(command[1], capacitate_max);
+                        System.out.println(add);
                     } else {
-                        System.out.println("EROARE: Capacitate invalida\n");
+                        System.out.println("ERROR: Invalid capacity\n");
                     }
                 } else {
-                    System.out.println("EROARE: Format comanda invalid\n");
+                    System.out.println("ERROR: Invalid command format\n");
                 }
             }
 
             if(commandNumber==3){
                 if(command.length==3){
-                    //verificare numar parametri
                     try{
-                        //tipul parametrilor sa fie double
                         double sunFactor=Double.parseDouble(command[1]);
                         double windFactor=Double.parseDouble(command[2]);
                         String simulationAnswer=grid.simulateTick(sunFactor, windFactor);
                         System.out.println(simulationAnswer);
                     } catch (IllegalArgumentException e) {
-                        System.out.println("EROARE: Factori invalizi");
+                        System.out.println("ERROR: Invalid factors");
                     }
                 }
                 else{
-                    System.out.println("EROARE: Format comanda invalid\n");
+                    System.out.println("ERROR: Invalid command format\n");
                 }
             }
 
             if(commandNumber==4){
-                //verificare tip status
+                /*check status type*/
                 if(command[2].equals("true") || command[2].equals("false")){
                     boolean status=Boolean.parseBoolean(command[2]);
                     String verification=grid.statusVerification(command[1],status);
                     System.out.println(verification);
                 }
-                else System.out.println("EROARE: Status invalid\n");
+                else System.out.println("ERROR: Invalid status\n");
             }
 
             if(commandNumber==5){
@@ -120,16 +115,16 @@ public class App {
             if(commandNumber==6){
                 String history=grid.historyTick();
                 if(history.equals("")){
-                    System.out.println("Istoric evenimente gol");
+                    System.out.println("Empty event history");
                 }
                 else
                     System.out.println(history);
             }
-            //citire urmatoarea comanda
+            /*next command*/
             lineCommand=scanner.nextLine();
         }
         if(lineCommand.equals("7")) {
-            System.out.println("Simulatorul se inchide.\n");
+            System.out.println("The simulator is closing.\n");
         }
 
     }

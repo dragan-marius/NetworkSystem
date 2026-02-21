@@ -6,11 +6,11 @@ public class LifeSupportSystem extends EnergyConsumer {
     }
     public String displayDetails() {
         String energy = String.format("%.2f", getEnergyDemand());
-        String s = "Consumator "+id+" (SistemSuportViata) - Cerere: " + energy+" - Prioritate: " + getPriority()+" - Status: ";
+        String s = "Consumer "+id+" (LifeSupportSystem) - Demand: " + energy+" - Priority: " + getPriority()+" - Status: ";
         if(powered == true) {
-            s = s + "Alimentat\n";
+            s = s + "powered\n";
         }
-        else s = s + "Decuplat\n";
+        else s = s + "Disconnected\n";
         return s;
     }
 }

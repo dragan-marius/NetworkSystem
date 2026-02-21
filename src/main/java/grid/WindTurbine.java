@@ -14,7 +14,7 @@ public class WindTurbine extends EnergyProducer {
 
     public String displayDetails() {
         String power = String.format("%.2f",this.basePower);
-        String s = "Producator " + id + " (TurbinaEoliana) - PutereBaza: " + power+ " - Status: ";
+        String s = "Producer " + id + " (WindTurbine) - BasePower: " + power+ " - Status: ";
         if(operationalStatus == true){
             s = s+"Operational\n";
         }

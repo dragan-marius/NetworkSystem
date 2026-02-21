@@ -6,11 +6,11 @@ public class ScientificLaboratory extends EnergyConsumer {
     }
     public String displayDetails(){
         String energy = String.format("%.2f", getEnergyDemand());
-        String s = "Consumator " + id + " (LaboratorStiintific) - Cerere: " + energy + " - Prioritate: " + getPriority() + " - Status: ";
+        String s = "Consumer " + id + " (ScientificLaboratory) - Demand: " + energy + " - Priority: " + getPriority() + " - Status: ";
         if (powered == true){
-            s = s + "Alimentat\n";
+            s = s + "Powered\n";
         }
-        else s = s + "Decuplat\n";
+        else s = s + "Disconnected\n";
         return s;
     }
 }

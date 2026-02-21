@@ -14,7 +14,7 @@ public class NuclearReactor extends EnergyProducer {
     }
     public String displayDetails() {
         String power = String.format("%.2f", this.constantPower);
-        String s = "Producator "+id+" (ReactorNuclear) - PutereBaza: " + power + " - Status: ";
+        String s = "Producer "+id+" (NuclearReactor) - BasePower: " + power + " - Status: ";
         if(operationalStatus == true) {
             s = s + "Operational\n";
         }
