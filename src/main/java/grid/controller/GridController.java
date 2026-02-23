@@ -1,6 +1,11 @@
-package main.java.grid;
+package main.java.grid.controller;
 
 import java.util.ArrayList;
+
+import main.java.grid.component.consumer.*;
+import main.java.grid.component.producer.*;
+import main.java.grid.component.storage.*;
+import main.java.grid.component.base.*;
 
 public class GridController {
     private ArrayList<EnergyConsumer> energyConsumer = new ArrayList();
@@ -25,7 +30,7 @@ public class GridController {
         String disconnectList = "";
         /*energy production calculation*/
         for (EnergyProducer energyProducer : energyProducer) {
-            if (energyProducer.operationalStatus) {
+            if (energyProducer.isOperationalStatus()) {
                 totalProduction = totalProduction + energyProducer.calculateProduction(sunFactor, windFactor);
             }
         }
@@ -33,14 +38,14 @@ public class GridController {
         double deficit = 0.0;
         /*energy demand calculation*/
         for (EnergyConsumer energyConsumer : energyConsumer) {
-            if (energyConsumer.operationalStatus) {
+            if (energyConsumer.isOperationalStatus()) {
                 demandTotal = demandTotal + energyConsumer.getCurrentRequest();
             }
         }
         double delta = totalProduction - demandTotal;
         if (delta > 0) {
             for (Battery battery : batteries) {
-                if (battery.operationalStatus) {
+                if (battery.isOperationalStatus()) {
                     delta = battery.unload(delta);
                     if (delta <= 0.0) {
                         break;
@@ -50,7 +55,7 @@ public class GridController {
         } else if (delta < 0) {
             deficit = -delta;
             for (Battery battery : batteries) {
-                if (battery.operationalStatus) {
+                if (battery.isOperationalStatus()) {
                     deficit = deficit - battery.download(deficit);
                 }
             }
@@ -65,7 +70,7 @@ public class GridController {
                     if (disconnectList.length() != 0) {
                         disconnectList = disconnectList + ", ";
                     }
-                    disconnectList = disconnectList + energyConsumer.id;
+                    disconnectList = disconnectList + energyConsumer.getId();
                 }
             }
             for (EnergyConsumer energyConsumer : energyConsumer) {
@@ -75,7 +80,7 @@ public class GridController {
                     if (disconnectList.length() != 0) {
                         disconnectList = disconnectList + ", ";
                     }
-                    disconnectList = disconnectList + energyConsumer.id;
+                    disconnectList = disconnectList + energyConsumer.getId();
                 }
             }
         }
@@ -96,17 +101,17 @@ public class GridController {
     public int verification(String id){
         /*ID uniqueness check*/
         for(EnergyProducer energyProducer : energyProducer){
-            if(energyProducer.id.equals(id)){
+            if(energyProducer.getId().equals(id)){
                 return 0;
             }
         }
         for(EnergyConsumer energyConsumer : energyConsumer){
-            if(energyConsumer.id.equals(id)){
+            if(energyConsumer.getId().equals(id)){
                 return 0;
             }
         }
         for(Battery battery : batteries){
-            if(battery.id.equals(id)){
+            if(battery.getId().equals(id)){
                 return 0;
             }
         }
@@ -181,27 +186,27 @@ public class GridController {
             return "ERROR: Compound with id does not exist"+ id + "\n";
         /*operational status change*/
         for(EnergyConsumer energyConsumer : energyConsumer){
-            if(energyConsumer.id.equals(id)){
-                energyConsumer.operationalStatus = OperationalStatus;
-                if(energyConsumer.operationalStatus ==true){
+            if(energyConsumer.getId().equals(id)){
+                energyConsumer.setOperationalStatus(OperationalStatus);
+                if(energyConsumer.isOperationalStatus() == true){
                     return "Compound " + id + " is now operational\n";
                 }
                 else return "Compound " + id + " it is now defective\n";
             }
         }
         for(EnergyProducer energyProducer : energyProducer){
-            if(energyProducer.id.equals(id)){
-                energyProducer.operationalStatus = OperationalStatus;
-                if(energyProducer.operationalStatus ==true){
+            if(energyProducer.getId().equals(id)){
+                energyProducer.setOperationalStatus(OperationalStatus);
+                if(energyProducer.isOperationalStatus() == true){
                     return "Compound " + id + " is now operational\n";
                 }
                 else return "Compound " + id + " it is now defective\n";
             }
         }
         for(Battery battery : batteries){
-            if(battery.id.equals(id)){
-                battery.operationalStatus = OperationalStatus;
-                if(battery.operationalStatus ==true){
+            if(battery.getId().equals(id)){
+                battery.setOperationalStatus(OperationalStatus);
+                if(battery.isOperationalStatus() == true){
                     return "Compound " + id + " is now operational\n";
                 }
                 else return "Compound " + id + " it is now defective\n";

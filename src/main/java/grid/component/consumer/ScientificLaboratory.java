@@ -1,4 +1,4 @@
-package main.java.grid;
+package main.java.grid.component.consumer;
 
 public class ScientificLaboratory extends EnergyConsumer {
     public ScientificLaboratory(String id, double energyDemand){

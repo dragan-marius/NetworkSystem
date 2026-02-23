@@ -1,9 +1,10 @@
-package main.java.grid;
+package main.java.grid.component.storage;
 
+import main.java.grid.component.base.*;
 public class Battery extends NetworkComponent {
     private double maxCapacity;
     private double storedEenergy;
-    Battery(String id, double maxCapacity) {
+    public Battery(String id, double maxCapacity) {
         super(id);
         this.maxCapacity = maxCapacity;
         this.storedEenergy =0.0;

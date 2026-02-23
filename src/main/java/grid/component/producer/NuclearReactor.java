@@ -1,8 +1,8 @@
-package main.java.grid;
+package main.java.grid.component.producer;
 
 public class NuclearReactor extends EnergyProducer {
    protected double constantPower;
-    NuclearReactor(double constantPower, String id) {
+    public NuclearReactor(double constantPower, String id) {
         super(id);
         this.constantPower =constantPower;
     }

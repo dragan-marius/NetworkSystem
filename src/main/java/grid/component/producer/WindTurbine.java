@@ -1,9 +1,9 @@
-package main.java.grid;
+package main.java.grid.component.producer;
 
 public class WindTurbine extends EnergyProducer {
     private double basePower;
 
-    WindTurbine(double basePower, String id) {
+    public WindTurbine(double basePower, String id) {
         super(id);
         this.basePower = basePower;
     }

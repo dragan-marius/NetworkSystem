@@ -1,7 +1,7 @@
-package main.java.grid;
+package main.java.grid.component.consumer;
 
 public class LifeSupportSystem extends EnergyConsumer {
-    LifeSupportSystem(String id, double energyDemand){
+    public LifeSupportSystem(String id, double energyDemand){
         super(id,1,energyDemand);
     }
     public String displayDetails() {

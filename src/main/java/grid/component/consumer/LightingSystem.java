@@ -1,7 +1,7 @@
-package main.java.grid;
+package main.java.grid.component.consumer;
 
 public class LightingSystem extends EnergyConsumer {
-    LightingSystem(String id, double energyDemand){
+    public LightingSystem(String id, double energyDemand){
         super(id,3,energyDemand);
     }
     public String displayDetails() {

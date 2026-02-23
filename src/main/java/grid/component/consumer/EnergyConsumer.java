@@ -1,10 +1,11 @@
-package main.java.grid;
+package main.java.grid.component.consumer;
 
+import main.java.grid.component.base.*;
 public abstract class EnergyConsumer extends NetworkComponent {
     private double energyDemand;
     private int priority;
     protected boolean powered;
-    EnergyConsumer(String id, int priority, double energyDemand) {
+    public EnergyConsumer(String id, int priority, double energyDemand) {
         super(id);
         this.priority = priority;
         this.energyDemand = energyDemand;
@@ -23,10 +24,10 @@ public abstract class EnergyConsumer extends NetworkComponent {
     public void disconnectFromNetwork() {
         this.powered =false;
     }
-    int getPriority(){
+    public int getPriority(){
         return this.priority;
     }
-    double getEnergyDemand(){
+    public double getEnergyDemand(){
         return this.energyDemand;
     }
     public abstract String displayDetails();

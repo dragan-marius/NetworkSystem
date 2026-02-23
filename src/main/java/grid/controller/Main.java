@@ -1,11 +1,12 @@
-package main.java.grid;
+package main.java.grid.controller;
+
 import java.io.*;
 import java.util.*;
 
-public class App {
+public class Main {
     private Scanner scanner;
 
-    public App(InputStream input) {
+    public Main(InputStream input) {
         this.scanner = new Scanner(input);
     }
 
@@ -130,7 +131,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        App app = new App(System.in);
+        Main app = new Main(System.in);
         app.run();
     }
 }

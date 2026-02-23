@@ -1,8 +1,8 @@
-package main.java.grid;
+package main.java.grid.component.producer;
 
 public class SolarPanel extends EnergyProducer {
     private double maximumPower;
-    SolarPanel(double maximumPower, String id) {
+    public SolarPanel(double maximumPower, String id) {
         super(id);
         this.maximumPower = maximumPower;
     }
