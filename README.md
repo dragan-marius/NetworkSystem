@@ -1,51 +1,43 @@
-MarsGrid Energy Network Simulator
+# MarsGrid Energy Network Simulator
 
-Overview
+## Overview
 
-    MarsGrid is a simulation system designed to manage the energy network of
+MarsGrid is a simulation system designed to manage the energy network of
 an autonomous colony on Mars. The application models energy producers,
-consumers, and storage units, and simulates how energy is balanced
+consumers and storage units, and simulates how energy is balanced
 across the network during discrete time steps (ticks).
 
 The system is implemented using Object-Oriented Programming principles,
-including abstraction, inheritance, encapsulation, and polymorphism.
+including abstraction, inheritance, encapsulation and polymorphism.
 
+## Architecture
 
-    Architecture
+## Base Class
 
-Base Class
+* NetworkComponent - Common attributes: 'id', 'statusOperational' -
+  Parent class for all grid components
 
-    NetworkComponent - Common attributes: `id`, `statusOperational` -
-Parent class for all grid components
+## Energy Producers
 
-Energy Producers
+* EnergyProducer - Defines 'calculateProduction()' and
+  'displayDetails()'
 
-    Abstract class: EnergyProducer - Defines `calculateProduction()` and
-`displayDetails()`
-
-    Concrete implementations: - SolarPanel --- production depends on
-sunlight factor - WindTurbine --- production depends on wind
-factor - NuclearReactor --- constant production if operational
+* SolarPanel : production depends on sunlight factor
+* WindTurbine : production depends on wind factor
+* NuclearReactor : constant production if operational
 
 Energy Consumers
 
-    Abstract class: EnergyConsumer
+* EnergyConsumer(Abstract) : Contains attributes like 'energyDemand', 'priority'
+  and 'isPowered', along with methods such as 'getCurrentDemand()' and 'disconnectFromGrid()'.
+* LifeSupportSystem (priority 1) - Critical consumer
+* ScientificLaboratory (priority 2) - High-importance consumer
+* LightingSystem (priority 3) - Standard consumer
 
-    Attributes: - energyDemand - priority - isPowered
+## Energy Storage
+* Battery- Contains atributes 'maximumCapacity' and 'storedEnergy'. Implements methods to 'charge()'(stores energy without exceeding capacity) 'discharge()'( provides energy if available) 'displayDetails()'
 
-    Methods: - `getCurrentDemand()` - `disconnectFromGrid()` - getters for
-priority and demand
-
-    Concrete implementations: - LifeSupportSystem (priority 1) -
-ScientificLaboratory (priority 2) - LightingSystem (priority 3)
-
-Energy Storage
-    Battery- maximumCapacity - storedEnergy
-
-    Methods: - `charge()` --- stores energy without exceeding capacity -
-`discharge()` --- provides energy if available - `displayDetails()`
-
-Simulation Logic
+## Simulation Logic
 
 The system operates in simulation ticks.
 
@@ -61,7 +53,7 @@ Each tick performs the following steps:
 8.  Stop future simulation when blackout occurs.
 9.  Store simulation events in history.
 
-Command System
+## Command System
 
 The application is interactive and processes commands from the console.
 
@@ -79,26 +71,26 @@ Main Commands
 All inputs are validated, including unique IDs and positive numeric
 values.
 
-Technologies Used
+## Technologies Used
 
 -   Java
 -   Object-Oriented Programming
 -   ArrayLists for component management
 -   Command-line interface
 
- How to Run
+## How to Run
 
 javac -d bin src/**/*.java
 java -cp bin Main
 
-Example Simulation Behavior
+## Example Simulation Behavior
 
 -   Energy production and consumption are balanced dynamically.
 -   Batteries store surplus energy and supply deficit energy.
 -   Lower-priority consumers are disconnected if needed.
 -   System enters BLACKOUT if critical demand cannot be sustained.
 
-Event History
+## Event History
 
 The system records major events such as: - consumer disconnections -
 deficits - blackout events
